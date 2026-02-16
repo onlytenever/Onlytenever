@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>onlytenever</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    /* ------------------------------
+       ROOT + GLOBAL
+    ------------------------------ */
+    :root {
+      --bg: #050608;
+      --fg: #f5f5f5;
+      --muted: #9a9a9a;
+      --accent: #f5d36b;
+      --border: #1a1c22;
+
+      --font-main: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-mono: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, monospace;
+
+      --max-width: 960px;
+      --fade-duration: 1.6s;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-main);
+      line-height: 1.7;
+      opacity: 0;
+      animation: fadeIn var(--fade-duration) ease forwards;
+      overflow-x: hidden;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Slow drift for hero text */
+    @keyframes slowDrift {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
+      100% { transform: translateY(0px); }
+    }
+
+    main {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 120px 24px;
+    }
+
+    section {
+      padding: 160px 0;
+      border-bottom: 1px solid var(--border);
+      opacity: 0;
+      animation: sectionReveal 1.4s ease forwards;
+      animation-delay: 0.6s;
+    }
+
+    @keyframes sectionReveal {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1, h2, h3 {
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-size: 3rem;
+      line-height: 1.2;
+      margin-bottom: 24px;
+      animation: slowDrift 18s ease-in-out infinite;
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1.05rem;
+      color: var(--muted);
+      margin-bottom: 18px;
+      letter-spacing: 0.02em;
+    }
+
+    .tagline {
+      font-size: 0.85rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 40px;
+    }
+
+    .small-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .mono {
+      font-family: var(--font-mono);
+      letter-spacing: 0.14em;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(to right, var(--border), transparent);
+      margin: 40px 0;
+    }
+/* Remaining Pieces Counter */
+.counter-block {
+  margin-top: 40px;
+  padding: 40px 0;
+}
+
+.remaining-number {
+  font-size: 3rem;
+  letter-spacing: 0.12em;
+  margin-top: 12px;
+  color: var(--accent);
+  animation: slowDrift 16s ease-in-out infinite;
+}
+    /* ------------------------------
+       HERO LAYOUT
+    ------------------------------ */
+    .hero-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1.2fr);
+      gap: 80px;
+      align-items: start;
+    }
+
+    @media (max-width: 900px) {
+      .hero-layout {
+        grid-template-columns: 1fr;
+        gap: 60px;
+      }
+    }
+
+    .hero-sub {
+      border-left: 1px solid var(--border);
+      padding-left: 32px;
+    }
+
+    @media (max-width: 900px) {
+      .hero-sub {
+        border-left: none;
+        border-top: 1px solid var(--border);
+        padding-left: 0;
+        padding-top: 32px;
+      }
+    }
+
+    .quote-block {
+      margin-top: 32px;
+      padding-left: 20px;
+      border-left: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* ------------------------------
+       GRID (unchanged structure, improved spacing)
+    ------------------------------ */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 32px;
+      margin-top: 60px;
+    }
+
+    .piece-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      background: #0a0c10;
+      transition: transform 0.4s ease, border-color 0.4s ease;
+    }
+
+    .piece-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--accent);
+    }
+
+    .thumb {
+      height: 180px;
+      border-radius: 10px;
+      background: #11131a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .thumb::before {
+      content: "";
+      position: absolute;
+      inset: -20px;
+      background: linear-gradient(135deg, #2a2f3d, #1a1d27, #2a2f3d);
+      filter: blur(18px);
+      opacity: 0.6;
+    }
+
+    .thumb-inner {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      font-size: 0.8rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ------------------------------
+       MODAL (kept minimal)
+    ------------------------------ */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+    }
+
+    .modal-backdrop.active {
+      display: flex;
+    }
+
+    .modal {
+      background: #050608;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 32px;
+      max-width: 520px;
+      width: 100%;
+      animation: fadeIn 0.6s ease forwards;
+    }
+
+    /* ------------------------------
+       FOOTER
+    ------------------------------ */
+    .footer {
+      padding-top: 60px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+<section id="hero">
+  <div class="tagline">onlytenever</div>
+
+  <div class="hero-layout">
+    <div class="hero-main">
+      <h1>The price is the art.</h1>
+      <p>The audacity is the medium. The scarcity is the canvas.</p>
+
+      <div class="divider"></div>
+
+      <p>
+        I will create ten pieces of artwork in my lifetime.<br>
+        Not more. Not later. Not eventually.<br>
+        Ten — and then silence.
+      </p>
+
+      <p>Each piece is singular. Unrepeatable. Final.</p>
+      <p>Each piece carries a conversation only its collector will ever hear.</p>
+    </div>
+
+    <div class="hero-sub">
+      <div class="small-label">The creator</div>
+      <p>No name. No face. No biography.<br>The work is the identity.</p>
+
+      <div class="quote-block">
+        <p>Value declared before recognition.</p>
+        <p>Scarcity chosen, not imposed.</p>
+        <p class="mono" style="margin-top:12px;">I sign only with my initials.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+    <section id="about">
+ <p>
+    Each work is made slowly and alone — without assistants, algorithms, or repetition.
+    No prints. No editions. No derivatives. No hidden eleventh piece.
+  </p>
+
+  <p>
+    When a piece is claimed, it becomes part of a private exchange between creator and collector.
+    When the tenth is taken, the studio closes. This website becomes an archive.
+  </p>
+
+  <div class="quote-block" style="margin-top:60px;">
+    <p>Meaning requires limits.</p>
+    <p>Scarcity is chosen, not imposed.</p>
+    <p>Finality is the medium.</p>
+  </div>
+</section>
+
+
+    <!-- WORK GRID -->
+<section id="work">
+  <h2>The Work</h2>
+  <p>
+    Ten pieces. Each one waiting behind its own threshold. 
+    Nothing reveals itself until a decision is made.
+  </p>
+
+  <div class="grid" id="piecesGrid">
+
+    <!-- PIECE I -->
+    <article class="piece-card" data-piece-id="1" data-status="available">
+      <div class="piece-header">
+        <span class="mono">Piece I</span>
+        <span class="status-pill status-available">Unclaimed</span>
+      </div>
+      <div class="thumb">
+        <div class="thumb-inner">
+          <div class="lock-icon">⭘</div>
+          <div class="thumb-label">Unrevealed</div>
+        </div>
+      </div>
+      <div class="piece-footer">
+        <span class="muted">$100,000 — set value</span>
+        <button class="btn btn-primary" data-open-modal>Step Forward</button>
+      </div>
+    </article>
+
+    <!-- PIECE II -->
+    <article class="piece-card" data-piece-id="2" data-status="available">
+      <div class="piece-header">
+        <span class="mono">Piece II</span>
+        <span class="status-pill status-available">Unclaimed</span>
+      </div>
+      <div class="thumb">
+        <div class="thumb-inner">
+          <div class="lock-icon">⭘</div>
+          <div class="thumb-label">Unrevealed</div>
+        </div>
+      </div>
+      <div class="piece-footer">
+        <span class="muted">$100,000 — set value</span>
+        <button class="btn btn-primary" data-open-modal>Step Forward</button>
+      </div>
+    </article>
+
+    <!-- PIECE III -->
+    <article class="piece-card" data-piece-id="3" data-status="collected">
+      <div class="piece-header">
+        <span class="mono">Piece III</span>
+        <span class="status-pill status-collected">Claimed</span>
+      </div>
+      <div class="thumb">
+        <div class="thumb-inner">
+          <div class="lock-icon">⭘</div>
+          <div class="thumb-label">Irreversible</div>
+        </div>
+      </div>
+      <div class="piece-footer">
+        <span class="muted">Acquired by a private collector</span>
+        <button class="btn" disabled>Collected</button>
+      </div>
+    </article>
+
+    <!-- PIECE IV -->
+    <article class="piece-card" data-piece-id="4" data-status="available">
+      <div class="piece-header">
+        <span class="mono">Piece IV</span>
+        <span class="status-pill status-available">Unclaimed</span>
+      </div>
+      <div class="thumb">
+        <div class="thumb-inner">
+          <div class="lock-icon">⭘</div>
+          <div class="thumb-label">Unrevealed</div>
+        </div>
+      </div>
+      <div class="piece-footer">
+        <span class="muted">$100,000 — set value</span>
+        <button class="btn btn-primary" data-open-modal>Step Forward</button>
+      </div>
+    </article>
+
+    <!-- PIECE V -->
+    <article class="piece-card" data-piece-id="5" data-status="available">
+      <div class="piece-header">
+        <span class="mono">Piece V</span>
+        <span class="status-pill status-available">Unclaimed</span>
+      </div>
+      <div class="thumb">
+        <div class="thumb-inner">
+          <div class="lock-icon">⭘</div>
+          <div class="thumb-label">Unrevealed</div>
+        </div>
+      </div>
+      <div class="piece-footer">
+        <span class="muted">$50,000 — set value</span>
+        <button class="btn btn-primary" data-open-modal>Step Forward</button>
+      </div>
+    </article>
+
+    <!-- PIECE VI -->
+    <article class="piece-card" data-piece-id="6" data-status="available">
+      <div class="piece-header">
+        <span class="mono">Piece VI</span>
+        <span class="status-pill status-available">Unclaimed</span>
+      </div>
+      <div class="thumb">
+        <div class="thumb-inner">
+          <div class="lock-icon">⭘</div>
+          <div class="thumb-label">Unrevealed</div>
+        </div>
+      </div>
+      <div class="piece-footer">
+        <span class="muted">$100,000 — set value</span>
+        <button class="btn btn-primary" data-open-modal>Step Forward</button>
+      </div>
+    </article>
+
+    <!-- PIECE VII -->
+    <article class="piece-card" data-piece-id="7" data-status="available">
+      <div class="piece-header">
+        <span class="mono">Piece VII</span>
+        <span class="status-pill status-available">Unclaimed</span>
+      </div>
+      <div class="thumb">
+        <div class="thumb-inner">
+          <div class="lock-icon">⭘</div>
+          <div class="thumb-label">Unrevealed</div>
+        </div>
+      </div>
+      <div class="piece-footer">
+        <span class="muted">$50,000 — set value</span>
+        <button class="btn btn-primary" data-open-modal>Step Forward</button>
+      </div>
+    </article>
+
+    <!-- PIECE VIII -->
+    <article class="piece-card" data-piece-id="8" data-status="available">
+      <div class="piece-header">
+        <span class="mono">Piece VIII</span>
+        <span class="status-pill status-available">Unclaimed</span>
+      </div>
+      <div class="thumb">
+        <div class="thumb-inner">
+          <div class="lock-icon">⭘</div>
+          <div class="thumb-label">Unrevealed</div>
+        </div>
+      </div>
+      <div class="piece-footer">
+        <span class="muted">$100,000 — set value</span>
+        <button class="btn btn-primary" data-open-modal>Step Forward</button>
+      </div>
+    </article>
+
+    <!-- PIECE IX -->
+    <article class="piece-card" data-piece-id="9" data-status="available">
+      <div class="piece-header">
+        <span class="mono">Piece IX</span>
+        <span class="status-pill status-available">Unclaimed</span>
+      </div>
+      <div class="thumb">
+        <div class="thumb-inner">
+          <div class="lock-icon">⭘</div>
+          <div class="thumb-label">Unrevealed</div>
+        </div>
+      </div>
+      <div class="piece-footer">
+        <span class="muted">$100,000 — set value</span>
+        <button class="btn btn-primary" data-open-modal>Step Forward</button>
+      </div>
+    </article>
+
+    <!-- PIECE X -->
+    <article class="piece-card" data-piece-id="10" data-status="available">
+      <div class="piece-header">
+        <span class="mono">Piece X</span>
+        <span class="status-pill status-available">Unclaimed</span>
+      </div>
+      <div class="thumb">
+        <div class="thumb-inner">
+          <div class="lock-icon">⭘</div>
+          <div class="thumb-label">Unrevealed</div>
+        </div>
+      </div>
+      <div class="piece-footer">
+        <span class="muted">$100,000 — set value</span>
+        <button class="btn btn-primary" data-open-modal>Step Forward</button>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<section id="remaining">
+  <h2>Remaining Pieces</h2>
+
+  <p>
+    What the vault still holds.  
+    When the count reaches zero, the silence begins.
+  </p>
+
+  <div class="counter-block">
+    <div class="small-label">Before the vault closes</div>
+    <div class="remaining-number mono" id="remainingCount">10</div>
+  </div>
+
+  <p class="muted" style="margin-top:40px;">
+    Each claimed piece narrows the path.  
+    When the tenth is taken, the story ends.
+  </p>
+</section>
+<section id="collectors">
+  <h2>Collectors</h2>
+
+  <!-- Opening paragraphs -->
+  <p><strong>E</strong>ntering this chamber is not a transaction but a threshold.</p>
+  <p><strong>P</strong>assing through it requires a clarity of intent that cannot be borrowed, taught, or imitated.</p>
+  <p><strong>S</strong>tepping forward marks you as someone who understands that rarity is measured not in quantity, but in consequence.</p>
+  <p><strong>T</strong>hose who continue beyond this point do so knowing that every choice here carries weight.</p>
+
+  <div class="divider"></div>
+
+  <!-- Middle paragraphs -->
+  <p><strong>E</strong>very collector who reaches this depth recognizes that value is not assigned — it is revealed.</p>
+  <p><strong>I</strong>n this place, intention becomes the only currency that matters.</p>
+  <p><strong>N</strong>othing here is casual; each decision alters the shape of what remains.</p>
+  <p>Collectors do not apply or request — they emerge, drawn by something they cannot fully name but immediately recognize.</p>
+
+  <!-- Quote block -->
+  <div class="quote-block" style="margin-top:60px;">
+    <p>To collect is to cross a line that cannot be uncrossed.</p>
+    <p>To choose is to change the fate of the vault.</p>
+    <p>To take one is to become part of the ten.</p>
+  </div>
+
+  <!-- Closing section -->
+  <div style="margin-top:80px;">
+    <div class="small-label">What a collector receives</div>
+
+    <p><strong>1.</strong> A singular artwork created with full intention — no editions, no replicas, no second versions. What you receive exists once.</p>
+
+    <p><strong>2.</strong> A private, unrecorded conversation. One hour. One exchange. A moment that belongs only to you and will never be repeated.</p>
+
+    <p><strong>3.</strong> A place in the archive. When all ten pieces are claimed, this website becomes a sealed record of a completed story.</p>
+
+    <p><strong>4.</strong> A role in the myth. Ten pieces. Ten collectors. Ten decisions that define the entire narrative.</p>
+  </div>
+</section>
+<section id="conversation">
+  <h2>Conversation</h2>
+
+  <p>Conversation is not offered here. It is earned.</p>
+
+  <p>Most who arrive in this chamber are not ready to speak. Curiosity is not enough. Interest is not enough. Even admiration is not enough.</p>
+
+  <p>Only those who carry something with weight — something that cannot be set down — will understand what this room requires.</p>
+
+  <p>This is not a place for questions. It is a place for declarations. A conversation here is not a discussion, a negotiation, or an inquiry. It is a moment of clarity between two people who recognize the cost of intention.</p>
+
+  <p>If you choose to step forward, you may begin with a single sentence — not as a test, but as a signal. The true initiation happens in the transaction itself, where you will leave your email in the memo. That is the moment the conversation begins.</p>
+
+  <p>There is no template. No guidance. No examples. The purpose is not to judge you, but to understand your direction. When your sentence is ready, it opens the door; when the transaction is complete, you step through it.</p>
+
+  <div class="quote-block" style="margin-top:60px;">
+    <p>Say only what is true.</p>
+    <p>Say only what is yours.</p>
+    <p>Say only what cannot remain unsaid.</p>
+  </div>
+
+  <div style="margin-top:80px;">
+    <p>If you cross this line, do so with intention.</p>
+  </div>
+</section>
+<section id="crypto-ritual">
+  <h2>Crypto Ritual</h2>
+
+  <p>This chamber exists for one purpose: to complete the act that cannot be undone. The acquisition is not a payment — it is the moment you choose to become one of the ten.</p>
+
+  <p>The ritual is simple, but never casual. You will send the amount exactly as stated. You will include your email in the transaction memo. That single line is the signal that binds the piece to you.</p>
+
+  <div class="divider"></div>
+
+  <p>No forms. No confirmations. No waiting rooms. The chain itself records the moment you stepped forward. Once the transaction is complete, the piece is yours and the vault reshapes around what remains.</p>
+
+  <p>Your email in the memo opens the next chamber. It is how the conversation begins, how the archive recognizes you, and how your place among the ten is sealed.</p>
+
+  <div class="quote-block" style="margin-top:60px;">
+    <p>Send with intention.</p>
+    <p>Write your email clearly.</p>
+    <p>Cross the line only once.</p>
+  </div>
+
+  <div style="margin-top:80px;">
+    <div class="small-label">How the ritual works</div>
+
+    <p><strong>1.</strong> Send the exact amount to one of the addresses below.</p>
+    <p><strong>2.</strong> Include your email in the transaction memo — this is the key that opens the next chamber.</p>
+<p>If your platform cannot include a memo, send the transaction and then send a email to <span class="mono">onlytenever@proton.me</span>. The chain will confirm your intention; your message will complete the signal.</p>
+
+
+    <p><strong>3.</strong> Once the transaction is confirmed, the piece is yours. The vault updates. The story advances.</p>
+
+    <p><strong>Bitcoin:</strong> <span class="mono">bc1q2tm589qlajk6umxwngv6ucwkzslpzcz72fyjey</span></p>
+    <p><strong>Ethereum:</strong> <span class="mono">0x8Db0e65646B5c1BF334268D674cA95D97F906168</span></p>
+
+    <p>Copy the address exactly. The chain will protect you from error.</p>
+
+    <p>Proceed only when you are certain. The ritual is final.</p>
+  </div>
+</section>
+    <!-- MODAL -->
+    <div class="modal-backdrop" id="unlockModalBackdrop">
+      <div class="modal">
+        <div class="modal-header">
+          <div class="modal-title mono" id="modalTitle"></div>
+          <button id="modalClose" style="background:none;border:none;color:var(--muted);cursor:pointer;">Close</button>
+        </div>
+        <div id="modalBody"></div>
+      </div>
+    </div>
+
+<section id="finality">
+  <h2>Finality</h2>
+
+  <p>Every story that begins in this vault must end. Finality is the chamber where that truth is acknowledged without hesitation.</p>
+
+  <p>When a piece is claimed, it does not simply leave the vault — the vault itself changes shape. What once existed as possibility becomes history, and what remains grows sharper in its scarcity.</p>
+
+  <div class="divider"></div>
+
+  <p>There are no reversals here. No returns. No reconsiderations. The act of acquisition is the closing of a door that will never open again in the same way.</p>
+
+  <p>Each collector alters the landscape for those who follow. Each decision narrows the path. Each completed ritual brings the vault closer to its final silence.</p>
+
+  <div class="quote-block" style="margin-top:60px;">
+    <p>What is taken is gone forever.</p>
+    <p>What remains becomes more precise.</p>
+    <p>When the tenth piece is claimed, the vault closes.</p>
+  </div>
+
+  <div style="margin-top:80px;">
+    <div class="small-label">When the ten are complete</div>
+
+    <p>The site will not expand. No new works will appear. No new chambers will open. The archive will seal, preserving only what was chosen and the ten who chose.</p>
+
+    <p>Finality is not an ending. It is the moment the story becomes unchangeable.</p>
+  </div>
+</section>
+
+<section id="archive">
+  <h2>Archive</h2>
+
+  <p>The archive is the quietest chamber in the vault. Nothing here moves. Nothing changes. Everything within it has already been chosen.</p>
+
+  <p>Each piece that leaves the vault leaves a trace — not an image, not a replica, but a record of the moment it was claimed and the one who claimed it. The archive preserves these moments with absolute stillness.</p>
+
+  <div class="divider"></div>
+
+  <p>This chamber does not reveal identities. It does not display the works. It holds only the truth that they were taken, and the order in which the vault was transformed.</p>
+
+  <p>What you see here is not the art. It is the shadow the art left behind.</p>
+
+  <div class="quote-block" style="margin-top:60px;">
+    <p>Ten decisions.</p>
+    <p>Ten moments.</p>
+    <p>Ten names that will never be spoken.</p>
+  </div>
+
+  <div style="margin-top:80px;">
+    <div class="small-label">When the vault closes</div>
+
+    <p>When the tenth piece is claimed, the archive becomes complete. No new entries will appear. No new traces will be added. The vault will seal, and this chamber will stand as the only record of what occurred here.</p>
+
+    <p>The archive is not for the curious. It is for those who understand that absence can speak louder than presence.</p>
+  </div>
+</section>
+
+
+  </main>
+
+  <script>
+    /* Modal logic preserved */
+function updateRemainingCount() {
+  const cards = document.querySelectorAll('.piece-card');
+  let available = 0;
+
+  cards.forEach(card => {
+    if (card.dataset.status === 'available') {
+      available++;
+    }
+  });
+
+  const remainingEl = document.getElementById('remainingCount');
+  if (remainingEl) {
+    remainingEl.textContent = available;
+  }
+}
+
+// Run on page load
+updateRemainingCount();
+  </script>
+<script>
+  document.querySelectorAll('[data-open-modal]').forEach(button => {
+    button.addEventListener('click', () => {
+      const target = document.querySelector('#collectors');
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+</script>
+</body>
+</html>
