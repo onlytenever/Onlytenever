@@ -336,22 +336,24 @@
 
   <div class="grid" id="piecesGrid">
 
-    <!-- PIECE I -->
-    <article class="piece-card" data-piece-id="1" data-status="available">
-      <div class="piece-header">
-        <span class="mono">Piece I</span>
-        <span class="status-pill status-available">Unclaimed</span>
-      </div>
-      <div class="thumb">
-        <div class="thumb-inner">
-          <div class="lock-icon">⭘</div>
-          <div class="thumb-label">Unrevealed</div>
-        </div>
-      </div>
-      <div class="piece-footer">
-        <span class="muted">$100,000 — set value</span>
-        <button class="btn btn-primary" data-open-modal>Step Forward</button>
-      </div>
+<!-- PIECE I -->
+<article class="piece-card" data-piece-id="1" data-status="collected">
+  <div class="piece-header">
+    <span class="mono">Piece I</span>
+    <span class="status-pill status-collected">Claimed</span>
+  </div>
+  <div class="thumb">
+    <div class="thumb-inner">
+      <div class="lock-icon">⭘</div>
+      <div class="thumb-label">Irreversible</div>
+    </div>
+  </div>
+  <div class="piece-footer">
+    <span class="muted">Acquired by a private collector</span>
+    <button class="btn" disabled>Collected</button>
+  </div>
+</article>
+
     </article>
 
     <!-- PIECE II -->
@@ -408,23 +410,23 @@
       </div>
     </article>
 
-    <!-- PIECE V -->
-    <article class="piece-card" data-piece-id="5" data-status="available">
-      <div class="piece-header">
-        <span class="mono">Piece V</span>
-        <span class="status-pill status-available">Unclaimed</span>
-      </div>
-      <div class="thumb">
-        <div class="thumb-inner">
-          <div class="lock-icon">⭘</div>
-          <div class="thumb-label">Unrevealed</div>
-        </div>
-      </div>
-      <div class="piece-footer">
-        <span class="muted">$50,000 — set value</span>
-        <button class="btn btn-primary" data-open-modal>Step Forward</button>
-      </div>
-    </article>
+<!-- PIECE V -->
+<article class="piece-card" data-piece-id="5" data-status="collected">
+  <div class="piece-header">
+    <span class="mono">Piece V</span>
+    <span class="status-pill status-collected">Claimed</span>
+  </div>
+  <div class="thumb">
+    <div class="thumb-inner">
+      <div class="lock-icon">⭘</div>
+      <div class="thumb-label">Irreversible</div>
+    </div>
+  </div>
+  <div class="piece-footer">
+    <span class="muted">Acquired by a private collector</span>
+    <button class="btn" disabled>Collected</button>
+  </div>
+</article>
 
     <!-- PIECE VI -->
     <article class="piece-card" data-piece-id="6" data-status="available">
@@ -576,18 +578,18 @@
 </section>
 <section id="conversation">
   <h2>Conversation</h2>
+  
+<p>A conversation is not offered here. It is earned.</p>
 
-  <p>Conversation is not offered here. It is earned.</p>
+<p>Long before words are spoken, most who arrive in this chamber discover that curiosity is not enough. Interest is not enough. Even admiration is not enough.</p>
 
-  <p>Most who arrive in this chamber are not ready to speak. Curiosity is not enough. Interest is not enough. Even admiration is not enough.</p>
+<p>In this room, only those who carry something with weight — something that cannot be set down — will understand what is required.</p>
 
-  <p>Only those who carry something with weight — something that cannot be set down — will understand what this room requires.</p>
+<p>Voices here are not for questions. They are for declarations. A conversation in this chamber is not a discussion, a negotiation, or an inquiry. It is a moment of clarity between two people who recognize the cost of intention.</p>
 
-  <p>This is not a place for questions. It is a place for declarations. A conversation here is not a discussion, a negotiation, or an inquiry. It is a moment of clarity between two people who recognize the cost of intention.</p>
+<p>Enter, if you choose, with a single sentence — not as a test, but as a signal. The true initiation happens in the transaction itself, where you will leave your email in the memo. That is the moment the conversation begins.</p>
 
-  <p>If you choose to step forward, you may begin with a single sentence — not as a test, but as a signal. The true initiation happens in the transaction itself, where you will leave your email in the memo. That is the moment the conversation begins.</p>
 
-  <p>There is no template. No guidance. No examples. The purpose is not to judge you, but to understand your direction. When your sentence is ready, it opens the door; when the transaction is complete, you step through it.</p>
 
   <div class="quote-block" style="margin-top:60px;">
     <p>Say only what is true.</p>
@@ -738,4 +740,5 @@ updateRemainingCount();
   });
 </script>
 </body>
+
 </html>
